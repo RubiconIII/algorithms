@@ -21,7 +21,7 @@ public class HW5 {
         // fill master array so all algorithms get the same data
         masterData = new Integer[size];
         data = new Integer[size];
-        for (int i = 0; i <  size; i++) {
+        for (int i = 0; i < size; i++) {
             masterData[i] = r.nextInt();
         }
 
@@ -29,41 +29,41 @@ public class HW5 {
         // evaluate the SequentialSearchST and add time to results string
         data = Arrays.copyOf(masterData, size);
         SequentialSearchST<Integer, Integer> sst = new SequentialSearchST<>();
-        for (int i = 0; i < data.length; i++){
+        for (int i = 0; i < data.length; i++) {
             sst.put(i, data[i]);
         }
 
         double swInsertionTime = 0, swSearchTime = 0;
-        for(int i =0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             lasttime = sw.elapsedTime();
             sst.put(r.nextInt(), r.nextInt()); //insertion command
             thistime = sw.elapsedTime();
-            swInsertionTime = +thistime - lasttime;
+            swInsertionTime=+ thistime - lasttime;
             lasttime = sw.elapsedTime();
             sst.contains(r.nextInt()); //search command
             thistime = sw.elapsedTime();
-            swSearchTime = +thistime - lasttime;
+            swSearchTime =+ thistime - lasttime;
         }
         resultStr += " Total Sequential Search ST add time: " + swInsertionTime;
         resultStr += " Total Sequential Search ST search time: " + swSearchTime;
 
         // evaluate the RedBlackBST and add time to results string
         data = Arrays.copyOf(masterData, size);
+        double rbstInsertionTime = 0, rbstSearchTime = 0;
         RedBlackBST<Integer, Integer> rbst = new RedBlackBST<>();
-        for (int i = 0; i < data.length; i++){
+        for (int i = 0; i < data.length; i++) {
             rbst.put(i, data[i]);
         }
 
-        double rbstInsertionTime = 0, rbstSearchTime = 0;
-        for(int i =0; i < 1000; i++) {
+        for(int i = 0; i < 1000; i++) {
             lasttime = sw.elapsedTime();
             rbst.put(r.nextInt(), r.nextInt()); //insertion command
             thistime = sw.elapsedTime();
-            rbstInsertionTime = thistime - lasttime;
+            rbstInsertionTime =+ thistime - lasttime;
             lasttime = sw.elapsedTime();
             rbst.contains(r.nextInt()); //search command
             thistime = sw.elapsedTime();
-            rbstSearchTime = thistime - lasttime;
+            rbstSearchTime =+ thistime - lasttime;
         }
         resultStr += " Red Black BST add time: " + rbstInsertionTime;
         resultStr += " Red Black BST search time: " + rbstSearchTime;
