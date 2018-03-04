@@ -1,3 +1,10 @@
+/************* ALGORITHMS HW5 ***************************
+ * Tests Insert and Search times for given algorithms.
+ *
+ * author: Curtis P. Hohl
+ * 03/04/2018
+ *******************************************************/
+
 import edu.princeton.cs.algs4.*;
 import java.util.Arrays;
 import java.util.Random;
@@ -10,13 +17,13 @@ public class HW5 {
     }
 
     // this method takes one size, generates a random set of ints, times all of the search algorithms and
-    //  returns a String of the results
+    // returns a String of the results
     public String evaluate(int size) {
         Integer data[], masterData[];
         Stopwatch sw = new Stopwatch();
         Random r = new Random();
         double thistime, lasttime, addTime;
-        String resultStr = "Size: " + size;
+        String resultStr = "\nData Size: " + size;
 
         // fill master array so all algorithms get the same data
         masterData = new Integer[size];
@@ -25,55 +32,46 @@ public class HW5 {
             masterData[i] = r.nextInt();
         }
 
-
-        // evaluate the SequentialSearchST and add time to results string
         data = Arrays.copyOf(masterData, size);
+        double rbstInsertionTime = 0, rbstSearchTime = 0, sstInsertionTime = 0, sstSearchTime = 0;
         SequentialSearchST<Integer, Integer> sst = new SequentialSearchST<>();
+        RedBlackBST<Integer, Integer> rbst = new RedBlackBST<>();
         for (int i = 0; i < data.length; i++) {
             sst.put(i, data[i]);
+            rbst.put(i, data[i]);
         }
-
-        double swInsertionTime = 0, swSearchTime = 0;
         for (int i = 0; i < 1000; i++) {
+            // evaluate the SequentialSearchST
             lasttime = sw.elapsedTime();
             sst.put(r.nextInt(), r.nextInt()); //insertion command
             thistime = sw.elapsedTime();
-            swInsertionTime=+ thistime - lasttime;
+            sstInsertionTime += thistime - lasttime;
             lasttime = sw.elapsedTime();
             sst.contains(r.nextInt()); //search command
             thistime = sw.elapsedTime();
-            swSearchTime =+ thistime - lasttime;
-        }
-        resultStr += " Total Sequential Search ST add time: " + swInsertionTime;
-        resultStr += " Total Sequential Search ST search time: " + swSearchTime;
+            sstSearchTime += thistime - lasttime;
 
-        // evaluate the RedBlackBST and add time to results string
-        data = Arrays.copyOf(masterData, size);
-        double rbstInsertionTime = 0, rbstSearchTime = 0;
-        RedBlackBST<Integer, Integer> rbst = new RedBlackBST<>();
-        for (int i = 0; i < data.length; i++) {
-            rbst.put(i, data[i]);
-        }
-
-        for(int i = 0; i < 1000; i++) {
+            // evaluate the RedBlackBST
             lasttime = sw.elapsedTime();
             rbst.put(r.nextInt(), r.nextInt()); //insertion command
             thistime = sw.elapsedTime();
-            rbstInsertionTime =+ thistime - lasttime;
+            rbstInsertionTime += thistime - lasttime;
             lasttime = sw.elapsedTime();
             rbst.contains(r.nextInt()); //search command
             thistime = sw.elapsedTime();
-            rbstSearchTime =+ thistime - lasttime;
+            rbstSearchTime += thistime - lasttime;
         }
-        resultStr += " Red Black BST add time: " + rbstInsertionTime;
-        resultStr += " Red Black BST search time: " + rbstSearchTime;
+        resultStr += " \nTotal Sequential Search ST insert time: " + sstInsertionTime;
+        resultStr += " \nTotal Sequential Search ST search time: " + sstSearchTime;
+        resultStr += " \n\nTotal Red Black BST insert time: " + rbstInsertionTime;
+        resultStr += " \nTotal Red Black BST search time: " + rbstSearchTime;
 
         return resultStr;
     }
 
     public static void main(String[] args) {
         HW5 trial = new HW5();          // create a new TimeTest object
-        for (int size : DATASIZES) {        // get results for each data set size and print it out
+        for (int size : DATASIZES) {    // get results for each data set size and print it out
             System.out.println(trial.evaluate(size));
         }
 
