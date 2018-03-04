@@ -1,22 +1,21 @@
 import edu.princeton.cs.algs4.*;
-
 import java.util.Arrays;
 import java.util.Random;
 
-public class TimeTest {
+public class HW5 {
     // an array to hold the various data set sizes to be tested
     private static final int DATASIZES[] = {10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000};
 
-    public TimeTest() {
+    public HW5() {
     }
 
     // this method takes one size, generates a random set of ints, times all of the search algorithms and
     //  returns a String of the results
-    public String run(int size) {
+    public String evaluate(int size) {
         Integer data[], masterData[];
         Stopwatch sw = new Stopwatch();
         Random r = new Random();
-        double thistime, lasttime, time;
+        double thistime, lasttime, addTime;
         String resultStr = "Size: " + size;
 
         // fill master array so all algorithms get the same data
@@ -27,46 +26,49 @@ public class TimeTest {
         }
 
 
-        // run the selection sort and add time to results string
+        // evaluate the SequentialSearchST and add time to results string
         data = Arrays.copyOf(masterData, size);
-        lasttime = sw.elapsedTime();
-        Selection.sort(data);
-        thistime = sw.elapsedTime();
-        time = thistime - lasttime;
-        resultStr += " Selection: " + time;
+        SequentialSearchST<Integer, Integer> sst = new SequentialSearchST<>();
+        for (int i = 0; i < data.length; i++){
+            sst.put(i, data[i]);
+        }
 
-        // run the Insertion sort and add time to results string
+        lasttime = sw.elapsedTime();
+        sst.put(r.nextInt(), r.nextInt()); //insertion command
+        thistime = sw.elapsedTime();
+        addTime = thistime - lasttime;
+        resultStr += " Sequential Search ST add time: " + addTime;
+
+        lasttime = sw.elapsedTime();
+        sst.contains(r.nextInt()); //search command
+        thistime = sw.elapsedTime();
+        addTime = thistime - lasttime;
+        resultStr += " Sequential Search ST search time: " + addTime;
+
+
+        // evaluate the RedBlackBST and add time to results string
         data = Arrays.copyOf(masterData, size);
+        RedBlackBST<Integer, Integer> rbst = new RedBlackBST<>();
+        for (int i = 0; i < data.length; i++){
+            rbst.put(i, data[i]);
+        }
         lasttime = sw.elapsedTime();
-        Insertion.sort(data);
+        rbst.put(r.nextInt(), r.nextInt()); //insertion command
         thistime = sw.elapsedTime();
-        time = thistime - lasttime;
-        resultStr += " Insertion: " + time;
-
-
-        // run the Merge sort and add time to results string
-        data = Arrays.copyOf(masterData, size);
+        addTime = thistime - lasttime;
+        resultStr += " Red Black BST add time: " + addTime;
         lasttime = sw.elapsedTime();
-        Merge.sort(data);
+        rbst.contains(r.nextInt()); //search command
         thistime = sw.elapsedTime();
-        time = thistime - lasttime;
-        resultStr += " Merge: " + time;
-
-        // run the quick sort and add time to results string
-        data = Arrays.copyOf(masterData, size);
-        lasttime = sw.elapsedTime();
-        Quick.sort(data);
-        thistime = sw.elapsedTime();
-        time = thistime - lasttime;
-        resultStr += " Quick: " + time;
-
+        addTime = thistime - lasttime;
+        resultStr += " Red Black BST search time: " + addTime;
         return resultStr;
     }
 
     public static void main(String[] args) {
-        TimeTest trial = new TimeTest();          // create a new TimeTest object
+        HW5 trial = new HW5();          // create a new TimeTest object
         for (int size : DATASIZES) {        // get results for each data set size and print it out
-            System.out.println(trial.run(size));
+            System.out.println(trial.evaluate(size));
         }
 
     }
