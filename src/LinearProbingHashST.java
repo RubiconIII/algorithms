@@ -11,9 +11,9 @@ import java.util.Random;
  */
 
 public class LinearProbingHashST<Key, Value> {
-    private static final int DATASIZES[] = {10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000};
+    private static final int DATASIZES[] = {10, 15, 20, 25, 50, 75, 100, 110, 125, 150, 200, 350, 500, 600, 750, 1000};
     private int N; // number of key-value pairs in the table
-    private int M = 16; // size of linear-probing table
+    public int M = 1001; // size of linear-probing table
     private Key[] keys; // the keys
     private Value[] vals; // the values
 
@@ -73,20 +73,20 @@ public class LinearProbingHashST<Key, Value> {
     private int hash(Key key) {
         return (key.hashCode() & 0x7fffffff) % M;
     }
-
-    private void resize(int cap) {
-        LinearProbingHashST<Key, Value> t;
-        t = new LinearProbingHashST<Key, Value>(cap);
-        for (int i = 0; i < M; i++)
-            if (keys[i] != null)
-                t.put(keys[i], vals[i]);
-        keys = t.keys;
-        vals = t.vals;
-        M = t.M;
-    }
-
+    /*
+        private void resize(int cap) {
+            LinearProbingHashST<Key, Value> t;
+            t = new LinearProbingHashST<Key, Value>(cap);
+            for (int i = 0; i < M; i++)
+                if (keys[i] != null)
+                    t.put(keys[i], vals[i]);
+            keys = t.keys;
+            vals = t.vals;
+            M = t.M;
+        }
+    */
     public int put(Key key, Value val) {
-        if (N >= M / 2) resize(2 * M); // double M (see text)
+        //if (N >= M / 2) resize(2 * M); // double M (see text)
         int i;
         for (i = hash(key); keys[i] != null; i = (i + 1) % M) {
             if (keys[i].equals(key)) {
@@ -118,7 +118,7 @@ public class LinearProbingHashST<Key, Value> {
             i = (i + 1) % M;
         }
         N--;
-        if (N > 0 && N == M / 8) resize(M / 2);
+       // if (N > 0 && N == M / 8) resize(M / 2);
     }
 
     public boolean contains(Key key) {
