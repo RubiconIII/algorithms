@@ -66,17 +66,19 @@ public class HW8Arbitrage {
         String[] name = new String[9];
         EdgeWeightedDigraph G = new EdgeWeightedDigraph(9);
         readRates(G, "ExchangeRates.csv");
-        //System.out.print(G.toString());
-        BellmanFordSP spt = new BellmanFordSP(G, 0);
+       // System.out.print(G.toString());
+        BellmanFordSP spt = new BellmanFordSP(G, 8);
         if (spt.hasNegativeCycle()) {
             double opportunity = 1;
             double investment = 1000000;
             System.out.println("This graph has a negative cycle - arbitrage opportunity!");
 
             for (DirectedEdge DE : spt.negativeCycle()){
+                System.out.println(DE);
                 opportunity += -DE.weight();
+
             }
-            System.out.println(opportunity * investment);
+           System.out.println(opportunity * investment);
         }
         else{
             System.out.println("This graph has no negative cycle - no arbitrage opportunity.");
